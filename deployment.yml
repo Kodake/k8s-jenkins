@@ -1,0 +1,144 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: k8s-frontend
+  template:
+    metadata:
+      labels:
+        app: k8s-frontend
+    spec:
+      containers:
+      - name: k8s-frontend
+        image: kodake/k8s-frontend:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+        env:
+        - name: VITE_API_URL
+          value: "http://127.0.0.1:5555/api/posts"
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-backend-deployment
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: k8s-backend
+  template:
+    metadata:
+      labels:
+        app: k8s-backend
+    spec:
+      containers:
+      - name: k8s-backend
+        image: kodake/k8s-backend:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MONGO_URL
+          value: "mongodb://mongodb:27017/mongo_db"
+        - name: NODE_ENV
+          value: "development"
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: mongo-client
+#   labels:
+#     app: mongo-express
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: mongo-express
+#   template:
+#     metadata:
+#       labels:
+#         app: mongo-express
+#     spec:
+#       containers:
+#       - name: mongo-express
+#         image: mongo-express:latest
+#         env:
+#         - name: ME_CONFIG_MONGODB_SERVER
+#           value: mongo-server
+#         - name: ME_CONFIG_MONGODB_PORT
+#           value: "27017"
+#         ports:
+#         - containerPort: 8081
+#         resources:
+#           requests:
+#             memory: "128Mi"
+#             cpu: "250m"
+#           limits:
+#             memory: "256Mi"
+#             cpu: "500m"
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: mern-mongo-deployment
+#   labels:
+#     app: mern-mongo
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: mern-mongo
+#   template:
+#     metadata:
+#       labels:
+#         app: mern-mongo
+#     spec:
+#       containers:
+#       - name: mern-mongo
+#         image: kodake/mongo:latest
+#         ports:
+#         - containerPort: 27017
+#         volumeMounts:
+#         - name: mongodb-data
+#           mountPath: /data/db
+#         resources:
+#           requests:
+#             memory: "256Mi"
+#             cpu: "500m"
+#           limits:
+#             memory: "512Mi"
+#             cpu: "1000m"
+#       volumes:
+#       - name: mongodb-data
+#         persistentVolumeClaim:
+#           claimName: mongodb-pvc
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: mongodb-pvc
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 1Gi
