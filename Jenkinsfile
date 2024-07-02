@@ -16,17 +16,17 @@ pipeline {
                 }
             }
         }
-        stage('Docker Push') {
-            steps {
-                script {
-                    bat "docker login"
-                    bat "docker tag k8s-frontend:latest kodake/k8s-frontend:latest"
-                    bat "docker push kodake/k8s-frontend:latest"
-                    bat "docker tag k8s-backend:latest kodake/k8s-backend:latest"
-                    bat "docker push kodake/k8s-backend:latest"
-                }
-            }
-        }
+        // stage('Docker Push') {
+        //     steps {
+        //         script {
+        //             bat "docker login"
+        //             bat "docker tag k8s-frontend:latest kodake/k8s-frontend:latest"
+        //             bat "docker push kodake/k8s-frontend:latest"
+        //             bat "docker tag k8s-backend:latest kodake/k8s-backend:latest"
+        //             bat "docker push kodake/k8s-backend:latest"
+        //         }
+        //     }
+        // }
         stage('minikube start') {
             steps {
                 script {
