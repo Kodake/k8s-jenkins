@@ -26,11 +26,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongodb
+  name: k8s-mongodb
 spec:
   clusterIP: None
   selector:
-    app: mongodb
+    app: k8s-mongodb
   ports:
   - port: 27017
     targetPort: 27017
@@ -38,10 +38,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongo-express
+  name: k8s-mongo-express
 spec:
   selector:
-    app: mongo-express
+    app: k8s-mongo-express
   ports:
   - port: 8081
     targetPort: 8081
