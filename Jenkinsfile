@@ -26,14 +26,14 @@ pipeline {
         stage('kubectl deployment') {
             steps {
                 script {
-                    bat "kubectl apply -f .\deployment.yml"
+                    bat "kubectl apply -f .\\deployment.yml"
                 }
             }
         }
         stage('kubectl service') {
             steps {
                 script {
-                    bat "kubectl apply -f .\service.yml"
+                    bat "kubectl apply -f .\\service.yml"
                 }
             }
         }
